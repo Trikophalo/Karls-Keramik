@@ -368,6 +368,12 @@
             }
         }
         
+        @media (max-width: 767px) {
+  .cart-container {
+    display: none !important;
+  }
+}
+
         /* Lightbox Styles */
         .lightbox {
             position: fixed;
@@ -818,7 +824,8 @@
             transition: all 0.3s ease;
         }
         
-        .cart-dropdown {
+            .cart-dropdown {
+            display: none; /* <- neu */
             position: absolute;
             top: 100%;
             right: 0;
@@ -826,20 +833,21 @@
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            opacity: 1;
-            visibility: hidden;
             transform: translateY(20px);
             transition: all 0.3s ease;
             z-index: 1000;
             overflow: hidden;
             margin-top: 15px;
-        }
-        
-        .cart-dropdown.active {
-            opacity: 1;
-            visibility: visible;
+            }
+            .cart-dropdown.active {
+            display: block;
             transform: translateY(0);
-        }
+            }
+
+            @media (max-width: 767px) {
+            .cart-dropdown {
+                display: none !important;
+            }}
         
         .cart-header {
             display: flex;
@@ -2451,6 +2459,23 @@
         html {
             scroll-behavior: smooth;
         }
+
+          /* Fix für lange Texte auf kleinen Bildschirmen */
+  @media (max-width: 767px) {
+    .shop-info p {
+      min-height: unset;
+      max-height: 80px;
+      overflow: auto;
+      font-size: 14px;
+    }
+
+    .add-to-cart {
+      width: 36px !important;
+      height: 36px !important;
+      font-size: 18px;
+    }
+  }
+
     </style>
 </head>
 <body>
@@ -2483,7 +2508,7 @@
                         <span class="cart-count">0</span>
                         <i class="cart-symbol">👜</i>
                     </div>
-                    <div class="cart-dropdown">
+                    <div class="cart-dropdown" >
                         <div class="cart-header">
                             <h3>Warenkorb</h3>
                             <span class="close-cart">×</span>
@@ -2642,7 +2667,7 @@
                         <div class="shop-bottom">
                             <div class="shop-price">€28,00</div>
                             <button class="add-to-cart" data-id="1" data-name="Ocean Blue Tasse" data-price="28.00" data-image="/api/placeholder/400/300">+</button>
-                            <div class="add-to-cart-success">Zum Warenkorb hinzugefügt!</div>
+                            <div class="add-to-cart-success"></div>
                         </div>
                     </div>
                     <div class="shop-item" data-category="tassen">
@@ -2656,7 +2681,7 @@
                         <div class="shop-bottom">
                             <div class="shop-price">€42,00</div>
                             <button class="add-to-cart" data-id="2" data-name="Moderne Cremige Kaffee Tassen" data-price="42.00" data-image="/api/placeholder/400/300">+</button>
-                            <div class="add-to-cart-success">Zum Warenkorb hinzugefügt!</div>
+                            <div class="add-to-cart-success"></div>
                         </div>
                     </div>
                     <div class="shop-item" data-category="schalen">
@@ -2670,7 +2695,7 @@
                         <div class="shop-bottom">
                             <div class="shop-price">€35,00</div>
                             <button class="add-to-cart" data-id="3" data-name="Keramik Bowl" data-price="35.00" data-image="/api/placeholder/400/300">+</button>
-                            <div class="add-to-cart-success">Zum Warenkorb hinzugefügt!</div>
+                            <div class="add-to-cart-success"></div>
                         </div>
                     </div>
                 </div>
@@ -2989,5 +3014,38 @@
             });
         });
     </script>
+<script>
+  const cartIcon = document.querySelector(".cart-icon");
+  const cartDropdown = document.querySelector(".cart-dropdown");
+  const closeCart = document.querySelector(".close-cart");
+  const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+  if (window.innerWidth < 768) {
+    cartDropdown.classList.remove("active");
+  }
+
+cartIcon.addEventListener("click", function () {
+    if (window.innerWidth >= 768) {
+        cartDropdown.classList.toggle("active");
+    }
+});
+
+  closeCart.addEventListener("click", function () {
+    cartDropdown.classList.remove("active");
+  });
+
+addToCartButtons.forEach((btn) => {
+  btn.addEventListener("click", function () {
+    if (window.innerWidth < 768) {
+      // Zeige KEIN Dropdown, sondern z. B. nur eine kleine Nachricht
+      // oder lasse es einfach weg
+      console.log("Produkt wurde auf Mobile zum Warenkorb hinzugefügt.");
+    }
+  });
+});
+
+</script>
+
+
 </body>
 </html>
